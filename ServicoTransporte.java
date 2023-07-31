@@ -11,6 +11,7 @@ class ServicoTransporte {
     private List<Passageiro> passageiros;
     private List<Carga> cargas;
     private List<Motorista> motoristas;
+    private final Object passageirosLock = new Object();
 
     public ServicoTransporte(int id, String dataHoraInicio, int tempoDeslocamentoVeiculo1, int tempoDeslocamentoVeiculo2) {
         this.id = id;
@@ -39,7 +40,9 @@ class ServicoTransporte {
     }
 
     public List<Passageiro> getPassageiros() {
-        return passageiros;
+        synchronized (passageirosLock) {
+            return passageiros;
+        }
     }
 
     public List<Carga> getCargas() {
@@ -51,7 +54,9 @@ class ServicoTransporte {
     }
 
     public void adicionarPassageiro(Passageiro passageiro) {
-        passageiros.add(passageiro);
+      synchronized (passageirosLock) {
+            passageiros.add(passageiro);
+        }
     }
 
     public void adicionarCarga(Carga carga) {
